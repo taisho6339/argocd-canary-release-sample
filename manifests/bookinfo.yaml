@@ -192,8 +192,8 @@ spec:
       - name: tmp
         emptyDir: {}
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: reviews-v2
   labels:
@@ -231,6 +231,11 @@ spec:
         emptyDir: {}
       - name: tmp
         emptyDir: {}
+      strategy:
+        canary: # A new field that used to provide configurable options for a Canary strategy
+          steps:
+            - setWeight: 20
+            - pause: {}
 ---
 apiVersion: apps/v1
 kind: Deployment
