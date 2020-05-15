@@ -231,11 +231,11 @@ spec:
         emptyDir: {}
       - name: tmp
         emptyDir: {}
-      strategy:
-        canary: # A new field that used to provide configurable options for a Canary strategy
-          steps:
-            - setWeight: 20
-            - pause: {}
+  strategy:
+    canary: # A new field that used to provide configurable options for a Canary strategy
+      steps:
+        - setWeight: 20
+        - pause: {}
 ---
 apiVersion: apps/v1
 kind: Deployment
