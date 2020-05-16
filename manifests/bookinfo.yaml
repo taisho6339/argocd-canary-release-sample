@@ -142,7 +142,7 @@ metadata:
     app: reviews
     version: v1
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: reviews
@@ -171,6 +171,11 @@ spec:
         emptyDir: {}
       - name: tmp
         emptyDir: {}
+  strategy:
+    canary:
+      steps:
+        - setWeight: 50
+        - pause: { duration: 10s }
 ---
 ##################################################################################################
 # Productpage services
