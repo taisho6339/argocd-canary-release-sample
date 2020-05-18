@@ -19,10 +19,19 @@ spec:
   hosts:
   - reviews
   http:
-  - route:
+  - name: primary
+    route:
     - destination:
         host: reviews
-        subset: v1
+      weight: 100
+    - destination:
+        host: reviews-canary
+      weight: 0
+#    fault:
+#      abort:
+#        percentage:
+#          value: 100
+#        httpStatus: 500
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -49,4 +58,3 @@ spec:
     - destination:
         host: details
         subset: v1
----

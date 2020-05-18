@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: failure-count
+spec:
+  args:
+    - name: service-name
+  metrics:
+    - name: failure-count
+      interval: 10s
+      initialDelay: 30s
+      failureCondition: result >= 3
+      failureLimit: 3
+      provider:
+        prometheus:
+          address: "http://prometheus.istio-system.svc.cluster.local:9090"
+          query: |
+            sum(irate(
+              istio_requests_total{reporter="source",destination_service=~"{{args.service-name}}",response_code!~"5.*"}[10s]
+            ))
