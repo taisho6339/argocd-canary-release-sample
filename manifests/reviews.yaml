@@ -21,7 +21,6 @@ spec:
       name: http
   selector:
     app: reviews
-    version: v1
 ---
 apiVersion: v1
 kind: Service
@@ -36,7 +35,6 @@ spec:
       name: http
   selector:
     app: reviews
-    version: v2
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
@@ -82,7 +80,7 @@ spec:
           - templateName: failure-count
         args:
           - name: service-name
-            value: reviews-canary.default.svc.cluster.local
+            value: reviews.default.svc.cluster.local
       stableService: reviews
       canaryService: reviews-canary
       trafficRouting:
@@ -92,5 +90,11 @@ spec:
             routes:
               - primary
       steps:
-        - setWeight: 100
-        - pause: { }
+        - setWeight: 20
+        - pause: { duration: 20s }
+        - setWeight: 40
+        - pause: {duration: 20s}
+        - setWeight: 60
+        - pause: {duration: 20s}
+        - setWeight: 80
+        - pause: {duration: 20s}
